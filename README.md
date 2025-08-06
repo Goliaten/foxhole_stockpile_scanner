@@ -1,0 +1,1 @@
+# foxhole_stockpile_scanner
