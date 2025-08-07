@@ -1,5 +1,7 @@
 import os
+import subprocess
 import time
+import traceback
 from source.mouse_manager import MM
 import toml
 
@@ -7,6 +9,28 @@ from source.screenshot_parser import make_screenshot
 
 
 def main() -> None:
+    fir_proc = start_fir()
+    try:
+        while True:
+            time.sleep(1)
+        run_core()
+    except BaseException:
+        traceback.print_exc()
+        murder_process(fir_proc)
+
+
+def murder_process(proc: subprocess.Popen) -> None:
+    proc.kill()
+
+
+def start_fir() -> subprocess.Popen:
+    cmd = ["python", "-m", "http.server", "-d", "fir"]
+    proc = subprocess.Popen(cmd)
+
+    return proc
+
+
+def run_core() -> None:
     # get params
     cfg = toml.load(os.path.join("params.toml"))
     MM.config = cfg
