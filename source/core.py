@@ -4,27 +4,39 @@ import time
 import traceback
 from source.mouse_manager import MM
 import toml
+from selenium import webdriver
 
-from source.screenshot_parser import make_screenshot
+from source.image_processor import input_image, make_screenshot
+import source.config as cfg
 
 
 def main() -> None:
     fir_proc = start_fir()
+    selenium_proc = start_selenium()
     try:
+        input_image(selenium_proc)
         while True:
-            time.sleep(1)
-        run_core()
+            time.sleep(2)
+        # run_core()
     except BaseException:
         traceback.print_exc()
         murder_process(fir_proc)
+        selenium_proc.close()
 
 
 def murder_process(proc: subprocess.Popen) -> None:
     proc.kill()
 
 
+def start_selenium():
+    driver = webdriver.Firefox()
+    driver.get(f"localhost:{cfg.FIR_PORT}")
+
+    return driver
+
+
 def start_fir() -> subprocess.Popen:
-    cmd = ["python", "-m", "http.server", "-d", "fir"]
+    cmd = ["python", "-m", "http.server", str(cfg.FIR_PORT), "-d", "fir"]
     proc = subprocess.Popen(cmd)
 
     return proc

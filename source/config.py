@@ -2,3 +2,6 @@ LOCATIONS_DIR = "locations_files"
 POSITION_SPEW_SLEEP_TIME = 0.05
 DEFAULT_POSITION = (0, 0)
 SOURCE_DIR = "source"
+
+
+FIR_PORT = 8000

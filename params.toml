@@ -2,7 +2,7 @@ title = "config file"
 
 [run_settings]
 run_position_spew = false
-click_on_position_at_start = true
+click_on_position_at_start = false
 position_to_click_at_start = [1000, 500]
 
 [parameters]
