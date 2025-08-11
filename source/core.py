@@ -6,7 +6,7 @@ from source.mouse_manager import MM
 import toml
 from selenium import webdriver
 
-from source.image_processor import input_image, make_screenshot
+from source.image_processor import get_download_button, input_image, make_screenshot
 import source.config as cfg
 
 
@@ -15,6 +15,8 @@ def main() -> None:
     selenium_proc = start_selenium()
     try:
         input_image(selenium_proc)
+        time.sleep(5)
+        # get_download_button(selenium_proc, 1)
         while True:
             time.sleep(2)
         # run_core()
@@ -28,7 +30,7 @@ def murder_process(proc: subprocess.Popen) -> None:
     proc.kill()
 
 
-def start_selenium():
+def start_selenium() -> webdriver.Remote:
     driver = webdriver.Firefox()
     driver.get(f"localhost:{cfg.FIR_PORT}")
 
