@@ -37,7 +37,7 @@ def start_selenium():
 
 
 def start_fir() -> subprocess.Popen:
-    cmd = ["python", "-m", "http.server", str(cfg.FIR_PORT), "-d", "fir"]
+    cmd = ["python", "-m", "http.server", str(cfg.FIR_PORT), "-d", cfg.FIR_DIR]
     proc = subprocess.Popen(cmd)
 
     return proc

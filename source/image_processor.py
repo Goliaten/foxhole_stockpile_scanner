@@ -19,6 +19,6 @@ def input_image(webdriver):
     find_image_input(webdriver, full_path)
 
 
-def find_image_input(webdriver: webdriver.Remote, image_path: str):
+def find_image_input(webdriver: webdriver.Firefox, image_path: str):
     input_field = webdriver.find_element(By.TAG_NAME, "input")
     input_field.send_keys(image_path)
