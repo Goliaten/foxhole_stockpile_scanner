@@ -13,6 +13,7 @@ import source.config as cfg
 def main() -> None:
     fir_proc = start_fir()
     selenium_proc = start_selenium()
+    # TODO instead of downloading images to directory via Selenium webdriver, have server send it to a custom made webserver, and save it that way
     try:
         input_image(selenium_proc)
         while True:

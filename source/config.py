@@ -4,4 +4,7 @@ DEFAULT_POSITION = (0, 0)
 SOURCE_DIR = "source"
 
 
-FIR_PORT = 8000
+FIR_PORT = 10000
+FIR_DIR = "fir_stockpile_scanner"
+
+RECEIVER_PORT = 10001
