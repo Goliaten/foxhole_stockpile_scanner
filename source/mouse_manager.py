@@ -37,11 +37,8 @@ class MM:
     def spew_location(self) -> None:
         while True:
             pos = pg.position()
-            pos = pg.Point(
-                x=pos.x - self.config.get("parameters", {}).get("offset_x", 0),
-                y=pos.y - self.config.get("parameters", {}).get("offset_y", 0),
-            )
-            print(pos)
+            pos = (pos.x, pos.y)
+            print(f"Position: {pos}, offset: {self.offset_point(pos, True)}")
             time.sleep(cfg.POSITION_SPEW_SLEEP_TIME)
 
     def offset_point(self, pos: Tuple[int, int], reverse=False) -> Tuple[int, int]:
