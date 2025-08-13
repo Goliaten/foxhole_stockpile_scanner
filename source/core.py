@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 import subprocess
 import time
 import traceback
@@ -6,27 +7,28 @@ from source.mouse_manager import MM
 import toml
 from selenium import webdriver
 
-from source.image_processor import input_image, make_screenshot
 import source.config as cfg
 
 
 def main() -> None:
     fir_proc = start_fir()
     selenium_proc = start_selenium()
-    # TODO instead of downloading images to directory via Selenium webdriver, have server send it to a custom made webserver, and save it that way
+    flask_proc = start_flask()
     try:
-        input_image(selenium_proc)
-        while True:
-            time.sleep(2)
-        # run_core()
+        run_core()
     except BaseException:
         traceback.print_exc()
-        murder_process(fir_proc)
         selenium_proc.close()
+        fir_proc.kill()
+        flask_proc.kill()
 
 
-def murder_process(proc: subprocess.Popen) -> None:
-    proc.kill()
+def start_flask():
+    cmd = []
+    p1 = subprocess.Popen(cmd)
+    p1.start()
+
+    return p1
 
 
 def start_selenium():
