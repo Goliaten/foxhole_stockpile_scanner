@@ -70,13 +70,14 @@ def run_core() -> None:
         MM().find_location(loc)
         MM().mouse_to_storage(loc)
         time.sleep(0.4)
-        for x in range(3):
-            make_screenshot()
+        for cnt in range(3):
+            filename = f"{round(time.time())}_{loc}_{cnt}.png"
+            MM().take_screenshot(filename)
+            # TODO read stockpile name
             MM().cycle_storage()
             time.sleep(0.3)
-        # TODO parse screenshot
-        # TODO read name
-        # TODO cycle until we see the same name
+            # TODO parse screenshot in selenium
+            # TODO cycle until we see the same name
         # repeat
         # uhh, idk, do something then
         raise NotImplementedError
