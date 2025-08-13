@@ -1,5 +1,6 @@
 from http import HTTPStatus
 import os
+import time
 from flask import Flask, jsonify, request
 
 import source.config as cfg
@@ -41,8 +42,15 @@ def receive_tsv():
         .replace("\n ", " ")
     )
 
-    with open(os.path.join(cfg.SOURCE_DIR, cfg.OUTPUT_DIR, "test.csv"), "w") as file:
+    data_for_filename = data_out.split("\n")
+    if len(data_out) > 1:
+        filename = data_for_filename[1].split(",")[0].split(".")[0]
+    else:
+        filename = f"{round(time.time())}"
+
+    with open(
+        os.path.join(cfg.SOURCE_DIR, cfg.OUTPUT_DIR, f"{filename}.csv"), "w"
+    ) as file:
         file.write(data_out)
-    print(data_out)
 
     return jsonify(), HTTPStatus.OK
