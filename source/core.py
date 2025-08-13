@@ -45,20 +45,24 @@ def start_fir() -> subprocess.Popen:
 
 def run_core() -> None:
     # get params
-    cfg = toml.load(os.path.join("params.toml"))
-    MM.config = cfg
+    params = toml.load(os.path.join("params.toml"))
+
+    for dirr in [cfg.LOCATIONS_DIR, cfg.OUTPUT_DIR, cfg.SCREENSHOT_DIR]:
+        Path(os.path.join(cfg.SOURCE_DIR, dirr)).mkdir(exist_ok=True)
+
+    MM.config = params
     MM.get_locations_file()
     # TODO check if map is open
 
-    if cfg.get("run_settings", {}).get("run_position_spew"):
+    if params.get("run_settings", {}).get("run_position_spew"):
         MM().spew_location()
-    if cfg.get("run_settings", {}).get("click_on_position_at_start"):
+    if params.get("run_settings", {}).get("click_on_position_at_start"):
         MM().click(
-            cfg.get("run_settings", {}).get("position_to_click_at_start", (0, 0))
+            params.get("run_settings", {}).get("position_to_click_at_start", (0, 0))
         )
     time.sleep(1)
     MM().open_map()
-    time.sleep(0.1)
+    time.sleep(1)
     # TODO turn off all unnecessary icons
 
     for loc in MM.locations.get("locations", {}).keys():
