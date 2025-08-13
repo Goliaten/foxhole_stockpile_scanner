@@ -1,5 +1,8 @@
 from http import HTTPStatus
+import os
 from flask import Flask, jsonify, request
+
+import source.config as cfg
 
 app = Flask(__name__)
 
@@ -26,7 +29,6 @@ def receive_tsv():
         response.headers.add("Access-Control-Allow-Methods", "POST, OPTIONS")
         return response
     data = request.data
-    from pprint import pprint
 
     data_out = (
         data.decode()
@@ -39,7 +41,7 @@ def receive_tsv():
         .replace("\n ", " ")
     )
 
-    with open("test.csv", "w") as file:
+    with open(os.path.join(cfg.SOURCE_DIR, cfg.OUTPUT_DIR, "test.csv"), "w") as file:
         file.write(data_out)
     print(data_out)
 

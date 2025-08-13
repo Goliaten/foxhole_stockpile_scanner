@@ -3,39 +3,50 @@ from pathlib import Path
 import subprocess
 import time
 import traceback
-from source.mouse_manager import MM
+from typing import Any, Dict
+from multiprocessing import Process
 import toml
-from selenium import webdriver
 
+from source.image_processor import run_image_processor
+from source.mouse_manager import MM
 import source.config as cfg
 
 
 def main() -> None:
+    params = toml.load(os.path.join("params.toml"))
     fir_proc = start_fir()
-    selenium_proc = start_selenium()
+    selenium_proc = start_selenium(params)
     flask_proc = start_flask()
     try:
-        run_core()
+        run_core(params)
     except BaseException:
         traceback.print_exc()
+        selenium_proc.kill()
         selenium_proc.close()
         fir_proc.kill()
         flask_proc.kill()
 
 
-def start_flask():
-    cmd = []
-    p1 = subprocess.Popen(cmd)
+def start_selenium(params) -> Process:
+    p1 = Process(target=run_image_processor, args=(params,))
     p1.start()
-
     return p1
 
 
-def start_selenium():
-    driver = webdriver.Firefox()
-    driver.get(f"localhost:{cfg.FIR_PORT}")
+def start_flask() -> subprocess.Popen:
+    cmd = [
+        "flask",
+        "run",
+        "-p",
+        str(cfg.RECEIVER_PORT),
+    ]
+    env = os.environ.copy()
+    env["FLASK_APP"] = str(
+        Path.cwd() / os.path.join(cfg.SOURCE_DIR, "http_receiver.py")
+    )
+    p1 = subprocess.Popen(cmd, env=env)
 
-    return driver
+    return p1
 
 
 def start_fir() -> subprocess.Popen:
@@ -45,9 +56,13 @@ def start_fir() -> subprocess.Popen:
     return proc
 
 
-def run_core() -> None:
+def run_core(params: Dict[str, Any]) -> None:
     # get params
-    params = toml.load(os.path.join("params.toml"))
+
+    if params.get("run_settings", {}).get("neutralise_core"):
+        while True:
+            time.sleep(1)
+            continue
 
     for dirr in [cfg.LOCATIONS_DIR, cfg.OUTPUT_DIR, cfg.SCREENSHOT_DIR]:
         Path(os.path.join(cfg.SOURCE_DIR, dirr)).mkdir(exist_ok=True)
