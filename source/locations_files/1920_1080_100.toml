@@ -4,7 +4,13 @@ first_search_position = [1780, 70]
 
 # Uncomment whatever you want to scan
 
+# FIXME sometimes these coordinates change for whatever reason
 [locations]
+# Callum's Cape
+# CallumsKeep = { name="Callum's Keep", pos=[1246,663] }
+
 # Speaking Woods
-Tine = [1267,500]
+# Tine = { name="Tine", pos=[1267,500]}
+Tine = { name="Tine", pos=[1200,500]}
 # Filament = [950,600]
+
