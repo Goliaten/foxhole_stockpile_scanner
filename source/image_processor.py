@@ -60,7 +60,11 @@ def is_finished(driver: webdriver.Remote) -> bool:
 
 
 def start_selenium():
-    driver = webdriver.Firefox()
+    from selenium.webdriver.firefox.options import Options
+
+    options = Options()
+    options.add_argument("--headless")
+    driver = webdriver.Firefox(options=options)
     driver.get(f"localhost:{cfg.FIR_PORT}")
 
     return driver
