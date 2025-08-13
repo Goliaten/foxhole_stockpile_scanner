@@ -83,8 +83,10 @@ def run_core(params: Dict[str, Any]) -> None:
     # TODO turn off all unnecessary icons
 
     for loc in MM.locations.get("locations", {}).keys():
+        print(f"{loc=}")
+        in_game_location = MM.locations.get("locations", {})[loc]["name"]
         MM().click_search_bar()
-        MM().find_location(loc)
+        MM().find_location(in_game_location)
         MM().mouse_to_storage(loc)
         time.sleep(0.4)
         for cnt in range(3):
@@ -97,4 +99,6 @@ def run_core(params: Dict[str, Any]) -> None:
             # TODO cycle until we see the same name
         # repeat
         # uhh, idk, do something then
+        time.sleep(5 * 60)
+        # TODO detect that all images have been processed, then die
         raise NotImplementedError

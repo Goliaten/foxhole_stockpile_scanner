@@ -85,7 +85,7 @@ class MM:
         self.click_first_result()
 
     def mouse_to_storage(self, location: str) -> None:
-        pos = self.locations.get("locations", {}).get(location)
+        pos = self.locations.get("locations", {})[location]["pos"]
         print(f"Position(storage): {pos}")
         self.mouse_to(pos)
 
