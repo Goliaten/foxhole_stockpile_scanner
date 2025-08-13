@@ -22,6 +22,7 @@ def main() -> None:
     except BaseException:
         traceback.print_exc()
         selenium_proc.kill()
+        selenium_proc.join()
         selenium_proc.close()
         fir_proc.kill()
         flask_proc.kill()

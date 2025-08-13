@@ -5,7 +5,7 @@ run_position_spew = false
 click_on_position_at_start = true
 position_to_click_at_start = [1000, 500]
 neutralise_selenium = false
-neutralise_core = true
+neutralise_core = false
 
 [parameters]
 resolution = [1920,1080]
@@ -14,4 +14,4 @@ offset_x = -1920
 offset_y = 0
 monitor_number=2
 
-position_spew_sleep_time = 0.05
+position_spew_sleep_time = 0.05 
