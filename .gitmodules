@@ -1,3 +1,4 @@
 [submodule "fir_stockpile_scanner"]
 	path = fir_stockpile_scanner
 	url = https://github.com/Goliaten/fir_stockpile_scanner
+	branch = modifications_for_stockpile_scaner

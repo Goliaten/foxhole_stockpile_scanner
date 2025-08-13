@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 import subprocess
 import time
 import traceback
@@ -6,26 +7,28 @@ from source.mouse_manager import MM
 import toml
 from selenium import webdriver
 
-from source.image_processor import input_image, make_screenshot
 import source.config as cfg
 
 
 def main() -> None:
     fir_proc = start_fir()
     selenium_proc = start_selenium()
+    flask_proc = start_flask()
     try:
-        input_image(selenium_proc)
-        while True:
-            time.sleep(2)
-        # run_core()
+        run_core()
     except BaseException:
         traceback.print_exc()
-        murder_process(fir_proc)
         selenium_proc.close()
+        fir_proc.kill()
+        flask_proc.kill()
 
 
-def murder_process(proc: subprocess.Popen) -> None:
-    proc.kill()
+def start_flask():
+    cmd = []
+    p1 = subprocess.Popen(cmd)
+    p1.start()
+
+    return p1
 
 
 def start_selenium():
@@ -36,7 +39,7 @@ def start_selenium():
 
 
 def start_fir() -> subprocess.Popen:
-    cmd = ["python", "-m", "http.server", str(cfg.FIR_PORT), "-d", "fir"]
+    cmd = ["python", "-m", "http.server", str(cfg.FIR_PORT), "-d", cfg.FIR_DIR]
     proc = subprocess.Popen(cmd)
 
     return proc
@@ -44,20 +47,24 @@ def start_fir() -> subprocess.Popen:
 
 def run_core() -> None:
     # get params
-    cfg = toml.load(os.path.join("params.toml"))
-    MM.config = cfg
+    params = toml.load(os.path.join("params.toml"))
+
+    for dirr in [cfg.LOCATIONS_DIR, cfg.OUTPUT_DIR, cfg.SCREENSHOT_DIR]:
+        Path(os.path.join(cfg.SOURCE_DIR, dirr)).mkdir(exist_ok=True)
+
+    MM.config = params
     MM.get_locations_file()
     # TODO check if map is open
 
-    if cfg.get("run_settings", {}).get("run_position_spew"):
+    if params.get("run_settings", {}).get("run_position_spew"):
         MM().spew_location()
-    if cfg.get("run_settings", {}).get("click_on_position_at_start"):
+    if params.get("run_settings", {}).get("click_on_position_at_start"):
         MM().click(
-            cfg.get("run_settings", {}).get("position_to_click_at_start", (0, 0))
+            params.get("run_settings", {}).get("position_to_click_at_start", (0, 0))
         )
     time.sleep(1)
     MM().open_map()
-    time.sleep(0.1)
+    time.sleep(1)
     # TODO turn off all unnecessary icons
 
     for loc in MM.locations.get("locations", {}).keys():
@@ -65,13 +72,14 @@ def run_core() -> None:
         MM().find_location(loc)
         MM().mouse_to_storage(loc)
         time.sleep(0.4)
-        for x in range(3):
-            make_screenshot()
+        for cnt in range(3):
+            filename = f"{round(time.time())}_{loc}_{cnt}.png"
+            MM().take_screenshot(filename)
+            # TODO read stockpile name
             MM().cycle_storage()
             time.sleep(0.3)
-        # TODO parse screenshot
-        # TODO read name
-        # TODO cycle until we see the same name
+            # TODO parse screenshot in selenium
+            # TODO cycle until we see the same name
         # repeat
         # uhh, idk, do something then
         raise NotImplementedError

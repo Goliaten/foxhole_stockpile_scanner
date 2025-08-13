@@ -1,5 +1,6 @@
 import os
 from typing import Any, Dict, Tuple
+import mss
 import pyautogui as pg  # type: ignore
 import time
 
@@ -37,11 +38,8 @@ class MM:
     def spew_location(self) -> None:
         while True:
             pos = pg.position()
-            pos = pg.Point(
-                x=pos.x - self.config.get("parameters", {}).get("offset_x", 0),
-                y=pos.y - self.config.get("parameters", {}).get("offset_y", 0),
-            )
-            print(pos)
+            pos = (pos.x, pos.y)
+            print(f"Position: {pos}, offset: {self.offset_point(pos, True)}")
             time.sleep(cfg.POSITION_SPEW_SLEEP_TIME)
 
     def offset_point(self, pos: Tuple[int, int], reverse=False) -> Tuple[int, int]:
@@ -88,8 +86,17 @@ class MM:
 
     def mouse_to_storage(self, location: str) -> None:
         pos = self.locations.get("locations", {}).get(location)
-        print(pos)
+        print(f"Position(storage): {pos}")
         self.mouse_to(pos)
 
     def cycle_storage(self) -> None:
         pg.typewrite(["tab"])
+
+    def take_screenshot(self, filename: str) -> None:
+        path = os.path.join(cfg.SOURCE_DIR, cfg.SCREENSHOT_DIR, filename)
+        with mss.mss() as sct:
+            mon = sct.monitors[
+                self.config.get("parameters", {}).get("monitor_number", 1)
+            ]
+            sct_img = sct.grab(mon)
+            mss.tools.to_png(sct_img.rgb, sct_img.size, output=path)
