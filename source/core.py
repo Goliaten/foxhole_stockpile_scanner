@@ -68,6 +68,8 @@ def run_core(params: Dict[str, Any]) -> None:
     for dirr in [cfg.LOCATIONS_DIR, cfg.OUTPUT_DIR, cfg.SCREENSHOT_DIR]:
         Path(os.path.join(cfg.SOURCE_DIR, dirr)).mkdir(exist_ok=True)
 
+    # TODO prompt user before we start for real
+
     MM.config = params
     MM.get_locations_file()
     # TODO check if map is open
@@ -96,10 +98,9 @@ def run_core(params: Dict[str, Any]) -> None:
             # TODO read stockpile name
             MM().cycle_storage()
             time.sleep(0.3)
-            # TODO parse screenshot in selenium
             # TODO cycle until we see the same name
         # repeat
         # uhh, idk, do something then
-        time.sleep(5 * 60)
-        # TODO detect that all images have been processed, then die
-        raise NotImplementedError
+    time.sleep(5 * 60)
+    # TODO detect that all images have been processed, then die
+    raise NotImplementedError
