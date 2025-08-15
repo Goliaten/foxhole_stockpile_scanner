@@ -80,9 +80,9 @@ def run_core(params: Dict[str, Any]) -> None:
         MM().click(
             params.get("run_settings", {}).get("position_to_click_at_start", (0, 0))
         )
-    time.sleep(1)
+    time.sleep(cfg.SLEEP_BEFORE_OPEN_MAP)
     MM().open_map()
-    time.sleep(1)
+    time.sleep(cfg.SLEEP_AFTER_OPEN_MAP)
     # TODO turn off all unnecessary icons
 
     for loc in MM.locations.get("locations", {}).keys():
@@ -91,7 +91,8 @@ def run_core(params: Dict[str, Any]) -> None:
         MM().click_search_bar()
         MM().find_location(in_game_location)
         MM().mouse_to_storage(loc)
-        time.sleep(0.4)
+
+        time.sleep(cfg.SLEEP_AFTER_MOUSE_OVER_LOCATION)
 
         # TODO make something better than looping over all stockpiles 10 times
         for cnt in range(cfg.STOCKPILE_TAB_COUNT):
@@ -99,7 +100,7 @@ def run_core(params: Dict[str, Any]) -> None:
             MM().take_screenshot(filename)
             # TODO read stockpile name
             MM().cycle_storage()
-            time.sleep(0.3)
+            time.sleep(cfg.SLEEP_AFTER_STOCKPILE_TAB)
             # TODO cycle until we see the same name
         # repeat
         # uhh, idk, do something then
