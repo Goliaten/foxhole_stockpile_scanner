@@ -92,7 +92,9 @@ def run_core(params: Dict[str, Any]) -> None:
         MM().find_location(in_game_location)
         MM().mouse_to_storage(loc)
         time.sleep(0.4)
-        for cnt in range(3):
+
+        # TODO make something better than looping over all stockpiles 10 times
+        for cnt in range(cfg.STOCKPILE_TAB_COUNT):
             filename = f"{round(time.time())}_{loc}_{cnt}.png"
             MM().take_screenshot(filename)
             # TODO read stockpile name
