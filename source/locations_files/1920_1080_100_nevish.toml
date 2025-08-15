@@ -1,0 +1,51 @@
+
+search_bar = [1790, 35]
+first_search_position = [1780, 70]
+# Uncomment whatever you want to scan
+
+[locations]
+# template = {name="", pos=[,]}
+
+# Speaking Woods
+Tine = { name="Tine", pos=[1180,514]}
+Filament = { name="The Filament", pos=[941,602]}
+
+# The Moors
+# Ogmaran = {name="Ogmaran", pos=[,]}
+# Morrighan = {name="Morrighan's Grave", pos=[,]}
+
+# Callum's Cape
+# CallumsKeep = {name="Callum's Keep", pos=[,]}
+# Holdout = {name="Holdout", pos=[930,650]}
+
+# Nevish Line
+ScryingBelt = {name="The Scrying Belt", pos=[1244,480]}
+MistleShrine = {name="Mistle Shrine", pos=[869,523]}
+Blackcoat = {name="Blackcoat Way", pos=[876,450]}
+
+# Reaching Trail
+# Brodytown = {name="Brodytown", pos=[,]}
+# Reprieve = {name="Reprieve", pos=[,]}
+
+# Basin Sionnach
+# CuttailStation = {name="Cuttail Station", pos=[,]}
+# TheDen = {name="The Den", pos=[,]}
+# Sess = {name="Sess", pos=[,]}
+
+# Howl County
+# GreatWardenDam = {name="Great Warden Dam", pos=[,]}
+# HungryWolf = {name="Hungry Wolf", pos=[,]}
+# LittleLamb = {name="Little Lamb", pos=[,]}
+
+# Viper Pit
+# Kirknell = {name="Kirknell", pos=[,]}
+# EarlCrowley = {name="Earl Crowley", pos=[,]}
+
+# Clanshead Valley
+# TheKing = {name="The King", pos=[,]}
+# ThePike = {name="The Pike", pos=[,]}
+
+# Morgen's Crossing
+# Quietus = {name="Quietus", pos=[,]}
+# Lividus = {name="Lividus", pos=[,]}
+# Allsight = {name="Allsight", pos=[,]}

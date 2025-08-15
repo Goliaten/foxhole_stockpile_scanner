@@ -12,6 +12,7 @@ resolution = [1920,1080]
 scale = 100
 offset_x = -1920
 offset_y = 0
+location = "nevish"
 monitor_number=2
 
 position_spew_sleep_time = 0.05 

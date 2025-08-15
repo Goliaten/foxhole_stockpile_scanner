@@ -24,8 +24,9 @@ class MM:
         res_x = params.get("resolution")[0]
         res_y = params.get("resolution")[1]
         scale = params.get("scale")
+        location = params.get("location")
 
-        file = f"{res_x}_{res_y}_{scale}.toml"
+        file = f"{res_x}_{res_y}_{scale}_{location}.toml"
         path = os.path.join(cfg.SOURCE_DIR, cfg.LOCATIONS_DIR, file)
 
         if os.path.exists(path):
