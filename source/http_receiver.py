@@ -43,7 +43,7 @@ def receive_tsv():
     )
 
     data_for_filename = data_out.split("\n")
-    if len(data_out) > 1:
+    if len(data_for_filename) > 1:
         filename = data_for_filename[1].split(",")[0].split(".")[0]
     else:
         filename = f"{round(time.time())}"
