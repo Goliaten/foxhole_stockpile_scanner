@@ -51,7 +51,7 @@ def receive_tsv():
     else:
         location = f"{round(time.time(), 2)}"
         stock_name = ""
-    filename = f"{location}{stock_name}"
+    filename = f"{location}_{stock_name}"
 
     with open(
         os.path.join(cfg.SOURCE_DIR, cfg.OUTPUT_DIR, f"{filename}.csv"), "w"
