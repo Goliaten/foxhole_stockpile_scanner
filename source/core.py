@@ -3,39 +3,51 @@ from pathlib import Path
 import subprocess
 import time
 import traceback
-from source.mouse_manager import MM
+from typing import Any, Dict
+from multiprocessing import Process
 import toml
-from selenium import webdriver
 
+from source.image_processor import check_for_images_to_process, run_image_processor
+from source.mouse_manager import MM
 import source.config as cfg
 
 
 def main() -> None:
+    params = toml.load(os.path.join("params.toml"))
     fir_proc = start_fir()
-    selenium_proc = start_selenium()
+    selenium_proc = start_selenium(params)
     flask_proc = start_flask()
     try:
-        run_core()
+        run_core(params)
     except BaseException:
         traceback.print_exc()
+        selenium_proc.kill()
+        selenium_proc.join()
         selenium_proc.close()
         fir_proc.kill()
         flask_proc.kill()
 
 
-def start_flask():
-    cmd = []
-    p1 = subprocess.Popen(cmd)
+def start_selenium(params) -> Process:
+    p1 = Process(target=run_image_processor, args=(params,))
     p1.start()
-
     return p1
 
 
-def start_selenium():
-    driver = webdriver.Firefox()
-    driver.get(f"localhost:{cfg.FIR_PORT}")
+def start_flask() -> subprocess.Popen:
+    cmd = [
+        "flask",
+        "run",
+        "-p",
+        str(cfg.RECEIVER_PORT),
+    ]
+    env = os.environ.copy()
+    env["FLASK_APP"] = str(
+        Path.cwd() / os.path.join(cfg.SOURCE_DIR, "http_receiver.py")
+    )
+    p1 = subprocess.Popen(cmd, env=env)
 
-    return driver
+    return p1
 
 
 def start_fir() -> subprocess.Popen:
@@ -45,12 +57,18 @@ def start_fir() -> subprocess.Popen:
     return proc
 
 
-def run_core() -> None:
+def run_core(params: Dict[str, Any]) -> None:
     # get params
-    params = toml.load(os.path.join("params.toml"))
+
+    if params.get("run_settings", {}).get("neutralise_core"):
+        while True:
+            time.sleep(1)
+            continue
 
     for dirr in [cfg.LOCATIONS_DIR, cfg.OUTPUT_DIR, cfg.SCREENSHOT_DIR]:
         Path(os.path.join(cfg.SOURCE_DIR, dirr)).mkdir(exist_ok=True)
+
+    # TODO prompt user before we start for real
 
     MM.config = params
     MM.get_locations_file()
@@ -62,24 +80,45 @@ def run_core() -> None:
         MM().click(
             params.get("run_settings", {}).get("position_to_click_at_start", (0, 0))
         )
-    time.sleep(1)
+    time.sleep(cfg.SLEEP_BEFORE_OPEN_MAP)
     MM().open_map()
-    time.sleep(1)
+    time.sleep(cfg.SLEEP_AFTER_OPEN_MAP)
     # TODO turn off all unnecessary icons
 
     for loc in MM.locations.get("locations", {}).keys():
+        in_game_location = MM.locations.get("locations", {})[loc]["name"]
+
+        print(
+            f"Key: {loc}; "
+            f"Location: {in_game_location}; "
+            f"Position: {MM.locations.get('locations', {})[loc]}"
+        )
+
         MM().click_search_bar()
-        MM().find_location(loc)
+        MM().find_location(in_game_location)
         MM().mouse_to_storage(loc)
-        time.sleep(0.4)
-        for cnt in range(3):
+
+        time.sleep(cfg.SLEEP_AFTER_MOUSE_OVER_LOCATION)
+
+        # TODO make something better than looping over all stockpiles X times
+        for cnt in range(cfg.STOCKPILE_TAB_COUNT):
             filename = f"{round(time.time())}_{loc}_{cnt}.png"
+
+            time.sleep(cfg.SLEEP_BEFORE_SCREENSHOT)
             MM().take_screenshot(filename)
-            # TODO read stockpile name
             MM().cycle_storage()
-            time.sleep(0.3)
-            # TODO parse screenshot in selenium
-            # TODO cycle until we see the same name
-        # repeat
-        # uhh, idk, do something then
-        raise NotImplementedError
+
+    print("Finished making screenshots.")
+
+    while check_for_images_to_process():
+        print(
+            "Images still processing. "
+            f"Sleeping for {cfg.SLEEP_FILES_LEFT_TO_PROCESS_WAIT} seconds"
+        )
+        time.sleep(cfg.SLEEP_FILES_LEFT_TO_PROCESS_WAIT)
+
+    print(
+        "Finished sending images to FIR. "
+        f"Will exit in {cfg.SLEEP_BEFORE_FINISHING} seconds."
+    )
+    time.sleep(cfg.SLEEP_BEFORE_FINISHING)

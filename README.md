@@ -1,6 +1,15 @@
 # foxhole_stockpile_scanner
 
 TODO
+- proper readme
+    - installation instructions
+    - usage instructions
+    - quirks / design choices
+    - how to make locations file
+- detect when all screenshots have been parsed
+- properly finish the program
+- consider launching several FIR instances
 
 http receiver - `cd source && flask --app http_receiver run -p 10001`
-core + fir - `pythom main.py`
+core + fir - `python main.py`
+

@@ -1,5 +1,9 @@
 from http import HTTPStatus
+import os
+import time
 from flask import Flask, jsonify, request
+
+import source.config as cfg
 
 app = Flask(__name__)
 
@@ -26,7 +30,6 @@ def receive_tsv():
         response.headers.add("Access-Control-Allow-Methods", "POST, OPTIONS")
         return response
     data = request.data
-    from pprint import pprint
 
     data_out = (
         data.decode()
@@ -39,8 +42,20 @@ def receive_tsv():
         .replace("\n ", " ")
     )
 
-    with open("test.csv", "w") as file:
+    data_for_filename = data_out.split("\n")
+    if len(data_for_filename) > 1:
+        location = data_for_filename[1].split(",")[0].split(".")[0]
+        if not cfg.DISABLE_SHORTER_CSV:
+            location = location.split("_")[1]
+        stock_name = data_for_filename[1].split(",")[1]
+    else:
+        location = f"{round(time.time(), 2)}"
+        stock_name = ""
+    filename = f"{location}_{stock_name}"
+
+    with open(
+        os.path.join(cfg.SOURCE_DIR, cfg.OUTPUT_DIR, f"{filename}.csv"), "w"
+    ) as file:
         file.write(data_out)
-    print(data_out)
 
     return jsonify(), HTTPStatus.OK
