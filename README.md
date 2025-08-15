@@ -6,7 +6,8 @@ TODO
     - usage instructions
     - quirks / design choices
     - how to make locations file
-- 
+- detect when all screenshots have been parsed
+- properly finish the program
 
 http receiver - `cd source && flask --app http_receiver run -p 10001`
 core + fir - `python main.py`

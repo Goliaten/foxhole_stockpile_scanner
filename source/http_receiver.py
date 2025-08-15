@@ -44,9 +44,14 @@ def receive_tsv():
 
     data_for_filename = data_out.split("\n")
     if len(data_for_filename) > 1:
-        filename = data_for_filename[1].split(",")[0].split(".")[0]
+        location = data_for_filename[1].split(",")[0].split(".")[0]
+        if not cfg.DISABLE_SHORTER_CSV:
+            location = location.split("_")[1]
+        stock_name = data_for_filename[1].split(",")[1]
     else:
-        filename = f"{round(time.time())}"
+        location = f"{round(time.time(), 2)}"
+        stock_name = ""
+    filename = f"{location}{stock_name}"
 
     with open(
         os.path.join(cfg.SOURCE_DIR, cfg.OUTPUT_DIR, f"{filename}.csv"), "w"

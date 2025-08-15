@@ -12,3 +12,5 @@ FIR_PORT = 10000
 FIR_DIR = "fir_stockpile_scanner"
 
 RECEIVER_PORT = 10001
+
+DISABLE_SHORTER_CSV = False
