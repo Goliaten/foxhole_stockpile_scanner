@@ -8,15 +8,15 @@ first_search_position = [1780, 70]
 
 # Speaking Woods
 Tine = { name="Tine", pos=[1180,514]}
-Filament = { name="The Filament", pos=[941,602]}
+Filament = { name="The Filament", pos=[912,602]}
 
 # The Moors
-# Ogmaran = {name="Ogmaran", pos=[,]}
-# Morrighan = {name="Morrighan's Grave", pos=[,]}
+Ogmaran = {name="Ogmaran", pos=[698,475]}
+Morrighan = {name="Morrighan's Grave", pos=[855,552]}
 
 # Callum's Cape
-# CallumsKeep = {name="Callum's Keep", pos=[,]}
-# Holdout = {name="Holdout", pos=[930,650]}
+CallumsKeep = {name="Callum's Keep", pos=[1226,675]}
+# Holdout = {name="Holdout", pos=[895,697]} # redo position
 
 # Nevish Line
 ScryingBelt = {name="The Scrying Belt", pos=[1244,480]}
@@ -24,28 +24,28 @@ MistleShrine = {name="Mistle Shrine", pos=[869,523]}
 Blackcoat = {name="Blackcoat Way", pos=[876,450]}
 
 # Reaching Trail
-# Brodytown = {name="Brodytown", pos=[,]}
-# Reprieve = {name="Reprieve", pos=[,]}
+Brodytown = {name="Brodytown", pos=[994,623]}
+Reprieve = {name="Reprieve", pos=[975,572]}
 
 # Basin Sionnach
-# CuttailStation = {name="Cuttail Station", pos=[,]}
-# TheDen = {name="The Den", pos=[,]}
-# Sess = {name="Sess", pos=[,]}
+CuttailStation = {name="Cuttail Station", pos=[723,776]}
+TheDen = {name="The Den", pos=[1076,569]}
+Sess = {name="Sess", pos=[988,708]}
 
 # Howl County
-# GreatWardenDam = {name="Great Warden Dam", pos=[,]}
-# HungryWolf = {name="Hungry Wolf", pos=[,]}
-# LittleLamb = {name="Little Lamb", pos=[,]}
+GreatWardenDam = {name="Great Warden Dam", pos=[1030,690]}
+HungryWolf = {name="Hungry Wolf", pos=[877,503]}
+LittleLamb = {name="Little Lamb", pos=[927,481]}
 
 # Viper Pit
-# Kirknell = {name="Kirknell", pos=[,]}
-# EarlCrowley = {name="Earl Crowley", pos=[,]}
+Kirknell = {name="Kirknell", pos=[1037,440]}
+EarlCrowley = {name="Earl Crowley", pos=[641,617]}
 
 # Clanshead Valley
-# TheKing = {name="The King", pos=[,]}
-# ThePike = {name="The Pike", pos=[,]}
+TheKing = {name="The King", pos=[666,561]}
+ThePike = {name="The Pike", pos=[835,622]}
 
 # Morgen's Crossing
-# Quietus = {name="Quietus", pos=[,]}
-# Lividus = {name="Lividus", pos=[,]}
-# Allsight = {name="Allsight", pos=[,]}
+Quietus = {name="Quietus", pos=[847,667]}
+Lividus = {name="Lividus", pos=[786,526]}
+Allsight = {name="Allsight", pos=[941,489]}

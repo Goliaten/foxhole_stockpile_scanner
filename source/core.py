@@ -7,7 +7,7 @@ from typing import Any, Dict
 from multiprocessing import Process
 import toml
 
-from source.image_processor import run_image_processor
+from source.image_processor import check_for_images_to_process, run_image_processor
 from source.mouse_manager import MM
 import source.config as cfg
 
@@ -86,24 +86,39 @@ def run_core(params: Dict[str, Any]) -> None:
     # TODO turn off all unnecessary icons
 
     for loc in MM.locations.get("locations", {}).keys():
-        print(f"{loc=}")
         in_game_location = MM.locations.get("locations", {})[loc]["name"]
+
+        print(
+            f"Key: {loc}; "
+            f"Location: {in_game_location}; "
+            f"Position: {MM.locations.get('locations', {})[loc]}"
+        )
+
         MM().click_search_bar()
         MM().find_location(in_game_location)
         MM().mouse_to_storage(loc)
 
         time.sleep(cfg.SLEEP_AFTER_MOUSE_OVER_LOCATION)
 
-        # TODO make something better than looping over all stockpiles 10 times
+        # TODO make something better than looping over all stockpiles X times
         for cnt in range(cfg.STOCKPILE_TAB_COUNT):
             filename = f"{round(time.time())}_{loc}_{cnt}.png"
+
+            time.sleep(cfg.SLEEP_BEFORE_SCREENSHOT)
             MM().take_screenshot(filename)
-            # TODO read stockpile name
             MM().cycle_storage()
-            time.sleep(cfg.SLEEP_AFTER_STOCKPILE_TAB)
-            # TODO cycle until we see the same name
-        # repeat
-        # uhh, idk, do something then
-    time.sleep(5 * 60)
-    # TODO detect that all images have been processed, then die
-    raise NotImplementedError
+
+    print("Finished making screenshots.")
+
+    while check_for_images_to_process():
+        print(
+            "Images still processing. "
+            f"Sleeping for {cfg.SLEEP_FILES_LEFT_TO_PROCESS_WAIT} seconds"
+        )
+        time.sleep(cfg.SLEEP_FILES_LEFT_TO_PROCESS_WAIT)
+
+    print(
+        "Finished sending images to FIR. "
+        f"Will exit in {cfg.SLEEP_BEFORE_FINISHING} seconds."
+    )
+    time.sleep(cfg.SLEEP_BEFORE_FINISHING)

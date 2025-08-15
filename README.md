@@ -8,6 +8,7 @@ TODO
     - how to make locations file
 - detect when all screenshots have been parsed
 - properly finish the program
+- consider launching several FIR instances
 
 http receiver - `cd source && flask --app http_receiver run -p 10001`
 core + fir - `python main.py`
