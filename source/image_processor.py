@@ -42,8 +42,11 @@ def change_name_of_screenshot(image_path: str) -> None:
 
 
 def check_for_images_to_process() -> List[str]:
-    dir_content = os.listdir(os.path.join(cfg.SOURCE_DIR, cfg.SCREENSHOT_DIR))
-    return [x for x in dir_content if x[-4:] == ".png" and x[0] != "_"]
+    return [x for x in get_dir_content() if x[-4:] == ".png" and x[0] != "_"]
+
+
+def get_dir_content() -> List[str]:
+    return os.listdir(os.path.join(cfg.SOURCE_DIR, cfg.SCREENSHOT_DIR))
 
 
 def click_on_tsv(driver: webdriver.Remote) -> None:
