@@ -2,15 +2,26 @@
 
 TODO
 - proper readme
-    - installation instructions
     - usage instructions
     - quirks / design choices
     - how to make locations file
 - consider launching several FIR instances
 - mitigate FIR OCR issues - reading wrong values from images
 
-http receiver - `cd source && flask --app http_receiver run -p 10001`
-core + fir - `python main.py`
+
+# Table of Content
+<!-- TODO: make these points into internal links [text](link) -->
+- [Installation](#installation)
+    - [Requirements](#requirements)
+    - [Downloading](#downloading)
+    - [Installing virtual environment](#installing-virtual-environment)
+- [Usage](#usage)
+    - [Initial configuration](#initial-configuration)
+    - [Launching the script](#launching-the-script)
+- [Parametrisation](#parametrisation)
+- [Quirks / design choices](#quirks--design-choices)
+- [Making locations file](#making-locations-file)
+
 
 # Installation
 ## Requirements
@@ -21,7 +32,7 @@ core + fir - `python main.py`
 ## Downloading
 To clone the project using CLI use `git clone --recurse-submodules https://github.com/Goliaten/foxhole_stockpile_scanner`.
 
-If downloading the project directly, you'll also have to download the [submodule](https://github.com/Goliaten/fir_stockpile_scanner/tree/main), and put it in the `fir_stockpile_scanner` directory.
+If downloading the project directly, you'll also have to use `git submodule update fir_stockpile_scanner` or manually download the [submodule](https://github.com/Goliaten/fir_stockpile_scanner/tree/main), and put it in the `fir_stockpile_scanner` directory.
 
 Packaged releases are planned.
 
@@ -58,18 +69,29 @@ python -m pip install -r requirements.txt
 
 # Usage
 ## Initial configuration
-Due to script using the mouse cursor to hower over, click and write in screen, it requires a 
-### params.toml
-Under `[parameters]` set the following parameters in order to load correct locations file:
+This script moves your mouse on screen using pre-written co-ordinates. Unfortunately these vary depending on screen resolution and scale.
+Additionally due to how in-game map search works, searching for a location from different parts of the map will pinpoint to slightly offset location. For this reason in order to load correct (or mostly correct) set of co-ordinates to work with, you have to set appropriate parameters in `params.toml`. Under `[parameters]` set the following parameters in order to load correct locations file:
+
 - `resolution` to your resolution (format is `[width, height]` in pixels)
 - `scale` to your interface scale.
-- `location` to hex name from which you will be executing this script.
+- `location` to name of the hex from which you will be executing this script, or a nearby hex if location file is present for that hex. Check `./source/locations_files/` directory for matching hex name.
+
+Script will then assemble these values into a filename to load. Format is `{resolution[0]}_{resolution[1]}_{scale}_{location}.toml`
+
+You can see all of the available files with co-ordinates in `./source/locations_files`.
+If there isn't any that matches your location, but there is one that is 1 hex away, you can safely use that one.
+If there isn't any other that matches your parameters, you can make your own. Details on how to do that are be in [this chapter](#making-locations-file).
+### Usage on secondary screens
+In case you intend to use this script with foxhole on your secondary screen, there are additional parameters that need to be configured in `params.toml` under `[parameters]`:
+- `offset_x`
+- `offset_y`
+- `monitor_number`
+
+In order to set then properly, change `run_position_spew` to `true` and [launch the script](#launching-the-script).
+You should see messages being written into terminal, which are the position of your mouse. First brackets shows the real value, the offset one represents value offset using the `offset_x` and `offset_y`
+<!-- TODO finish this -->
 
 
-<!-- 
-1. change stuff in params.toml
-1. change file in locations_files
- -->
 
 ## Launching the script.
 
@@ -80,6 +102,10 @@ Under `[parameters]` set the following parameters in order to load correct locat
 
 # Parametrisation.
 There are 3* files that you can edit.
-## 1. params.toml
-## 2. config.py
-## 3. One of the files in source.locations_file directory
+## params.toml
+## config.py
+## source/locations_file/*
+
+# Quirks / design choices
+# Making locations file
+<!-- TODO: make a guide how to create locations file -->
