@@ -10,11 +10,6 @@ import source.config as cfg
 
 
 def run_image_processor(params: Dict[str, Any]):
-    # TODO Check if there is image to process
-    # TODO if yes, put it in the website
-    #   TODO wait until it's finished processing
-    #   TODO click the button to send tsv
-    # TODO if not, sleep
     webdriver = start_selenium()
 
     while True:
