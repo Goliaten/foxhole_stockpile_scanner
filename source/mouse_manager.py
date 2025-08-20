@@ -101,3 +101,6 @@ class MM:
             ]
             sct_img = sct.grab(mon)
             mss.tools.to_png(sct_img.rgb, sct_img.size, output=path)
+
+    def prompt_before_start(self) -> None:
+        raise NotImplementedError
