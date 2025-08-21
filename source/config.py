@@ -39,3 +39,5 @@ Recommended to leave it larger than necessary.
 """
 SLEEP_FILES_LEFT_TO_PROCESS_WAIT = 5
 SLEEP_BEFORE_FINISHING = 10
+
+IMAGE_EXTENSION = ".png"

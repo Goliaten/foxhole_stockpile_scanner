@@ -102,7 +102,7 @@ def run_core(params: Dict[str, Any]) -> None:
 
         # TODO make something better than looping over all stockpiles X times
         for cnt in range(cfg.STOCKPILE_TAB_COUNT):
-            filename = f"{round(time.time())}_{loc}_{cnt}.png"
+            filename = f"{round(time.time())}_{loc}_{cnt}{cfg.IMAGE_EXTENSION}"
 
             time.sleep(cfg.SLEEP_BEFORE_SCREENSHOT)
             MM().take_screenshot(filename)
