@@ -21,11 +21,18 @@ def main() -> None:
         run_core(params)
     except BaseException:
         traceback.print_exc()
-        selenium_proc.kill()
-        selenium_proc.join()
-        selenium_proc.close()
-        fir_proc.kill()
-        flask_proc.kill()
+
+    kill_child_processes(selenium_proc, fir_proc, flask_proc)
+
+
+def kill_child_processes(
+    selenium_proc: Process, fir_proc: subprocess.Popen, flask_proc: subprocess.Popen
+):
+    selenium_proc.kill()
+    selenium_proc.join()
+    selenium_proc.close()
+    fir_proc.kill()
+    flask_proc.kill()
 
 
 def start_selenium(params) -> Process:
