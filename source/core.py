@@ -19,6 +19,8 @@ def main() -> None:
     flask_proc = start_flask()
     try:
         run_core(params)
+    except SystemExit:
+        pass
     except BaseException:
         traceback.print_exc()
 
@@ -81,6 +83,9 @@ def run_core(params: Dict[str, Any]) -> None:
     MM.get_locations_file()
     # TODO check if map is open
 
+    if params.get("run_settings", {}).get("run_screenshot_test"):
+        MM().take_screenshot()
+        exit()
     if params.get("run_settings", {}).get("run_position_spew"):
         MM().spew_location()
     if params.get("run_settings", {}).get("click_on_position_at_start"):
