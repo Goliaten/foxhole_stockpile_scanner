@@ -93,7 +93,7 @@ In case you intend to use this script with foxhole on your secondary screen, the
 - `monitor_number`
 
 In order to set then properly, change `run_position_spew` to `true` and [launch the script](#launching-the-script).
-You should see messages being written into terminal, which are the position of your mouse. First brackets shows the real value, the offset one represents value offset using the `offset_x` and `offset_y`
+You should see messages being written into terminal, which are the position of your mouse. First brackets shows the real value, the offset one represents value offset using the `offset_x` and `offset_y`. You should set them so that top left corner of the `offset` value on the chosen screen is at (0,0)
 <!-- TODO finish this -->
 
 
