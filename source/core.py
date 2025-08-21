@@ -88,6 +88,7 @@ def run_core(params: Dict[str, Any]) -> None:
         exit()
     if params.get("run_settings", {}).get("run_position_spew"):
         MM().spew_location()
+        exit()
     if params.get("run_settings", {}).get("click_on_position_at_start"):
         MM().click(
             params.get("run_settings", {}).get("position_to_click_at_start", (0, 0))
