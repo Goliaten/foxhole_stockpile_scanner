@@ -93,7 +93,10 @@ class MM:
     def cycle_storage(self) -> None:
         pg.typewrite(["tab"])
 
-    def take_screenshot(self, filename: str) -> None:
+    def take_screenshot(self, filename: str = "") -> None:
+        if not filename:
+            filename = f"{round(time.time())}{cfg.IMAGE_EXTENSION}"
+
         path = os.path.join(cfg.SOURCE_DIR, cfg.SCREENSHOT_DIR, filename)
         with mss.mss() as sct:
             mon = sct.monitors[
