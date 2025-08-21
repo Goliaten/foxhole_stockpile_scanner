@@ -7,6 +7,11 @@ TODO
     - how to make locations file
 - consider launching several FIR instances
 - mitigate FIR OCR issues - reading wrong values from images
+- use FIR in the following ways:
+    - scanning state of a resource field
+    - scanning a bunker base
+    - scanning a maintenance tunnel
+    - Skynet
 
 
 # Table of Content
