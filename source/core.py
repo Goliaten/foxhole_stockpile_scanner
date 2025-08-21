@@ -14,18 +14,28 @@ import source.config as cfg
 
 def main() -> None:
     params = toml.load(os.path.join("params.toml"))
+    # TODO don't start these subprocesses if we run position spew or screenshot check
     fir_proc = start_fir()
     selenium_proc = start_selenium(params)
     flask_proc = start_flask()
     try:
         run_core(params)
+    except SystemExit:
+        pass
     except BaseException:
         traceback.print_exc()
-        selenium_proc.kill()
-        selenium_proc.join()
-        selenium_proc.close()
-        fir_proc.kill()
-        flask_proc.kill()
+
+    kill_child_processes(selenium_proc, fir_proc, flask_proc)
+
+
+def kill_child_processes(
+    selenium_proc: Process, fir_proc: subprocess.Popen, flask_proc: subprocess.Popen
+):
+    selenium_proc.kill()
+    selenium_proc.join()
+    selenium_proc.close()
+    fir_proc.kill()
+    flask_proc.kill()
 
 
 def start_selenium(params) -> Process:
@@ -74,8 +84,12 @@ def run_core(params: Dict[str, Any]) -> None:
     MM.get_locations_file()
     # TODO check if map is open
 
+    if params.get("run_settings", {}).get("run_screenshot_test"):
+        MM().take_screenshot()
+        exit()
     if params.get("run_settings", {}).get("run_position_spew"):
         MM().spew_location()
+        exit()
     if params.get("run_settings", {}).get("click_on_position_at_start"):
         MM().click(
             params.get("run_settings", {}).get("position_to_click_at_start", (0, 0))
@@ -102,7 +116,7 @@ def run_core(params: Dict[str, Any]) -> None:
 
         # TODO make something better than looping over all stockpiles X times
         for cnt in range(cfg.STOCKPILE_TAB_COUNT):
-            filename = f"{round(time.time())}_{loc}_{cnt}.png"
+            filename = f"{round(time.time())}_{loc}_{cnt}{cfg.IMAGE_EXTENSION}"
 
             time.sleep(cfg.SLEEP_BEFORE_SCREENSHOT)
             MM().take_screenshot(filename)

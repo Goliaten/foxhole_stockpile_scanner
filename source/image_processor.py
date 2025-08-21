@@ -37,7 +37,9 @@ def change_name_of_screenshot(image_path: str) -> None:
 
 
 def check_for_images_to_process() -> List[str]:
-    return [x for x in get_dir_content() if x[-4:] == ".png" and x[0] != "_"]
+    return [
+        x for x in get_dir_content() if x[-4:] == cfg.IMAGE_EXTENSION and x[0] != "_"
+    ]
 
 
 def get_dir_content() -> List[str]:
