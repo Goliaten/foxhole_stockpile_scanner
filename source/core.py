@@ -14,6 +14,7 @@ import source.config as cfg
 
 def main() -> None:
     params = toml.load(os.path.join("params.toml"))
+    # TODO don't start these subprocesses if we run position spew or screenshot check
     fir_proc = start_fir()
     selenium_proc = start_selenium(params)
     flask_proc = start_flask()
