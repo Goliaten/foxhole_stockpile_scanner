@@ -113,9 +113,27 @@ Once you're done setting the correct screen, set `run_screenshot_test` to `false
 # Parametrisation.
 There are 3* files that you can edit.
 ## params.toml
-## config.py
+- run settings
+- parameters
 ## source/locations_file/*
+## config.py
+- sleep times
+- subdirectory names
+- fir and receiver ports(if receiver is changed, FIR js file should be changed)
+- default image extension
+- shorter/longer csv filenames
+- FIR dirs
 
 # Quirks / design choices
+- why location files
+- stockpile tab count
+- stockpile tab count
+
 # Making locations file
+- explain all params and the format of position field
+- turn on `run_position_spew`
+- search for the field, hover mouse over target stockpile
+- remember the position
+- save it into the field
+- repeat for every stockpile
 <!-- TODO: make a guide how to create locations file -->
