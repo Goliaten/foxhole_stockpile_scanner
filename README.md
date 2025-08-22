@@ -93,10 +93,15 @@ In case you intend to use this script with foxhole on your secondary screen, the
 - `monitor_number`
 
 In order to set then properly, change `run_position_spew` to `true` and [launch the script](#launching-the-script).
-You should see messages being written into terminal, which are the position of your mouse. First brackets shows the real value, the offset one represents value offset using the `offset_x` and `offset_y`. You should set them so that top left corner of the `offset` value on the chosen screen is at (0,0)
-<!-- TODO finish this -->
+You should see messages being written into terminal, which are the position of your mouse. First brackets shows the real value, the offset one represents value offset using the `offset_x` and `offset_y`. You should set them so that top left corner of the `offset` value on the chosen screen is at (0,0).
 
+If values update too fast to acquire the position, you can change the refres time with `position_spew_sleep_time` parameter. Value is in seconds.
 
+Next turn off `run_position_spew` and turn on `run_screenshot_test`. Now if you start the program, it will make a screenshot of currently chosen (based on parameters) screen, and save them to `source` (by default).
+
+If the screen isn't correct one, you can change it using the `monitor_number` parameter. It accepts values from 0 to number of available screens.
+
+Once you're done setting the correct screen, set `run_screenshot_test` to `false`, and the program will launch in the normal mode.
 
 ## Launching the script.
 
