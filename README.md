@@ -12,6 +12,7 @@ TODO
     - scanning a bunker base
     - scanning a maintenance tunnel
     - Skynet
+- add stockpile tab parametrisation from global to per location field
 
 
 # Table of Content
@@ -85,7 +86,7 @@ Script will then assemble these values into a filename to load. Format is `{reso
 
 You can see all of the available files with co-ordinates in `./source/locations_files`.
 If there isn't any that matches your location, but there is one that is 1 hex away, you can safely use that one.
-If there isn't any other that matches your parameters, you can make your own. Details on how to do that are be in [this chapter](#making-locations-file).
+If there isn't any other that matches your parameters, you can make your own. Details on how to do that are in [making locations file](#making-locations-file) chapter.
 ### Usage on secondary screens
 In case you intend to use this script with foxhole on your secondary screen, there are additional parameters that need to be configured in `params.toml` under `[parameters]`:
 - `offset_x`
