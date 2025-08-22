@@ -47,7 +47,7 @@ def receive_tsv():
         location = data_for_filename[1].split(",")[0].split(".")[0]
         if not cfg.DISABLE_SHORTER_CSV:
             location = location.split("_")[1]
-        stock_name = data_for_filename[1].split(",")[1]
+        stock_name = data_for_filename[1].split(",")[1] or "Public"
     else:
         location = f"{round(time.time(), 2)}"
         stock_name = ""

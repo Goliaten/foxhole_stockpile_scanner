@@ -93,11 +93,20 @@ class MM:
     def cycle_storage(self) -> None:
         pg.typewrite(["tab"])
 
-    def take_screenshot(self, filename: str) -> None:
+    def take_screenshot(self, filename: str = "") -> None:
+        if not filename:
+            filename = f"{round(time.time())}{cfg.IMAGE_EXTENSION}"
+
         path = os.path.join(cfg.SOURCE_DIR, cfg.SCREENSHOT_DIR, filename)
         with mss.mss() as sct:
-            mon = sct.monitors[
-                self.config.get("parameters", {}).get("monitor_number", 1)
-            ]
+            try:
+                mon = sct.monitors[
+                    int(self.config.get("parameters", {}).get("monitor_number", 1))
+                ]
+            except IndexError:
+                print(
+                    f"Invalid monitor index (`monitor_number` parameter). Allowed range is <0,{len(sct.monitors) - 1}>"
+                )
+                exit(1)
             sct_img = sct.grab(mon)
             mss.tools.to_png(sct_img.rgb, sct_img.size, output=path)
