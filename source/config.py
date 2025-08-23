@@ -7,12 +7,14 @@ Stockpiles that should be scrolled through.
 Max possible amount of stockpiles visible through max is 6 (1 public + 5 reservable)
 """
 
+
 LOCATIONS_DIR = "locations_files"
 SOURCE_DIR = "source"
 SCREENSHOT_DIR = "screenshots"
 OUTPUT_DIR = "output"
 
 
+SELENIUM_HEADLESS = True
 FIR_PORT = 10000
 """
 Port through which Foxhole Inventory Report website will be accessible.
