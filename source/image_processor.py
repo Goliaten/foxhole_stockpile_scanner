@@ -13,9 +13,12 @@ def run_image_processor(params: Dict[str, Any]):
     webdriver = start_selenium()
 
     while True:
+        print("Checking images")
         images = check_for_images_to_process()
+        print(f"Got {len(images)} images.")
         for image in images:
             path_to_image = os.path.join(cfg.SOURCE_DIR, cfg.SCREENSHOT_DIR, image)
+            print(f"Sending {image} to selenium")
             input_image(webdriver, path_to_image)
             if params.get("run_settings", {}).get("neutralise_selenium"):
                 time.sleep(1)
@@ -23,9 +26,11 @@ def run_image_processor(params: Dict[str, Any]):
 
             while not is_finished(webdriver):
                 time.sleep(0.1)
+            print("Image finished processing. Clicking download.")
             click_on_tsv(webdriver)
+            print("Refreshing website")
             webdriver.refresh()
-
+            print("Changing name of screenshot")
             change_name_of_screenshot(path_to_image)
 
         time.sleep(0.5)
@@ -54,7 +59,7 @@ def is_finished(driver: webdriver.Remote) -> bool:
     # basically check if div with class=render has any children
     element = driver.find_element(By.CLASS_NAME, "render")
     child: WebElement = element.find_element(By.TAG_NAME, "img")
-    if child.get_attribute("src") and child.get_attribute("src")[:4] == "data":
+    if child.get_attribute("src") and (child.get_attribute("src")[:4] == "data" or not child.get_attribute('style')):
         return True
     return False
 
@@ -63,7 +68,8 @@ def start_selenium():
     from selenium.webdriver.firefox.options import Options
 
     options = Options()
-    options.add_argument("--headless")
+    if cfg.SELENIUM_HEADLESS:
+        options.add_argument("--headless")
     driver = webdriver.Firefox(options=options)
     driver.get(f"localhost:{cfg.FIR_PORT}")
 
