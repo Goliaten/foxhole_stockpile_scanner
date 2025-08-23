@@ -68,7 +68,8 @@ def start_selenium():
     from selenium.webdriver.firefox.options import Options
 
     options = Options()
-    options.add_argument("--headless")
+    if cfg.SELENIUM_HEADLESS:
+        options.add_argument("--headless")
     driver = webdriver.Firefox(options=options)
     driver.get(f"localhost:{cfg.FIR_PORT}")
 
