@@ -26,7 +26,7 @@ RECEIVER_PORT = 10001
 Port on which data receiver is listening for data.
 """
 
-DISABLE_SHORTER_CSV = False
+DISABLE_SHORTER_CSV = True
 """
 Disables shortened output CSV filename, removing the risk of an overwritten output file.
 """
