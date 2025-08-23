@@ -59,7 +59,7 @@ def is_finished(driver: webdriver.Remote) -> bool:
     # basically check if div with class=render has any children
     element = driver.find_element(By.CLASS_NAME, "render")
     child: WebElement = element.find_element(By.TAG_NAME, "img")
-    if child.get_attribute("src") and child.get_attribute("src")[:4] == "data":
+    if child.get_attribute("src") and (child.get_attribute("src")[:4] == "data" or not child.get_attribute('style')):
         return True
     return False
 
