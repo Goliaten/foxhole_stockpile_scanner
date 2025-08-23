@@ -16,7 +16,6 @@ TODO
 
 
 # Table of Content
-<!-- TODO: make these points into internal links [text](link) -->
 - [Installation](#installation)
     - [Requirements](#requirements)
     - [Downloading](#downloading)
