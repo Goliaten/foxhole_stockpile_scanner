@@ -136,7 +136,6 @@ There are 3* files that you can edit.
 # Quirks / design choices
 - why location files
 - stockpile tab count
-- stockpile tab count
 
 # Making locations file
 - explain all params and the format of position field
