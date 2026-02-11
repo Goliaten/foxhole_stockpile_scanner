@@ -9,7 +9,7 @@ import toml
 
 from source.image_processor import check_for_images_to_process, run_image_processor
 from source.mouse_manager import MM
-import source.config as cfg
+import config as cfg
 
 
 def main() -> None:

@@ -3,7 +3,7 @@ import os
 import time
 from flask import Flask, jsonify, request
 
-import source.config as cfg
+import config as cfg
 
 app = Flask(__name__)
 

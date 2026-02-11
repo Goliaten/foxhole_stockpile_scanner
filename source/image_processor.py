@@ -6,7 +6,7 @@ from selenium.webdriver.common.by import By
 from selenium import webdriver
 from selenium.webdriver.remote.webelement import WebElement
 
-import source.config as cfg
+import config as cfg
 
 
 def run_image_processor(params: Dict[str, Any]):

@@ -5,7 +5,7 @@ import pyautogui as pg  # type: ignore
 import time
 
 import toml
-import source.config as cfg
+import config as cfg
 
 
 class MM:
