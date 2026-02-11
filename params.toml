@@ -2,7 +2,7 @@ title = "config file"
 
 [run_settings]
 run_position_spew = false
-run_screenshot_test = true
+run_screenshot_test = false
 click_on_position_at_start = true
 position_to_click_at_start = [1000, 500]
 neutralise_selenium = false
