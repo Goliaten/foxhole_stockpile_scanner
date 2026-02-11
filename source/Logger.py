@@ -24,7 +24,9 @@ class Logger(logging.Logger):
 
         super().__init__(name, level, *args, **kwargs)
 
-    def get(self, name=config.LOGGER_NAME_PREFIX, level=config.LOG_LEVEL):
+    def get(self, name="", level=config.LOG_LEVEL):
+        name = ".".join([config.LOGGER_NAME_PREFIX, name])
+
         logger = logging.getLogger(name)
         if (
             logger.level == logging._nameToLevel.get(level)
