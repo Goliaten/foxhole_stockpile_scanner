@@ -4,25 +4,27 @@ import time
 from flask import Flask, jsonify, request
 
 import config as cfg
+from source.Logger import Logger
 
+SUBLOGGER = "http_receiver"
 app = Flask(__name__)
 
 
 @app.route("/collage")
 def receive_collage():
-    print(f"/collage ; method={request.method}")
+    Logger().get(SUBLOGGER).debug(f"/collage ; method={request.method}")
     return jsonify(), HTTPStatus.NOT_IMPLEMENTED
 
 
 @app.route("/totals")
 def receive_totals():
-    print(f"/totals ; method={request.method}")
+    Logger().get(SUBLOGGER).debug(f"/totals ; method={request.method}")
     return jsonify(), HTTPStatus.NOT_IMPLEMENTED
 
 
 @app.route("/tsv", methods=["POST", "OPTIONS"])
 def receive_tsv():
-    print(f"/tsv ; method={request.method}")
+    Logger().get(SUBLOGGER).debug(f"/tsv ; method={request.method}")
     if request.method == "OPTIONS":
         response = jsonify()
         response.headers.add("Access-Control-Allow-Origin", "*")

@@ -11,6 +11,7 @@ from source.helpers.printout_helper import in_out_wrapper
 from source.image_processor import check_for_images_to_process, run_image_processor
 from source.mouse_manager import MM
 import config as cfg
+from source.Logger import Logger
 
 
 def main() -> None:
@@ -30,14 +31,24 @@ def main() -> None:
     kill_child_processes(selenium_proc, fir_proc, flask_proc)
 
 
+@in_out_wrapper
 def kill_child_processes(
     selenium_proc: Process, fir_proc: subprocess.Popen, flask_proc: subprocess.Popen
 ):
-    selenium_proc.kill()
-    selenium_proc.join()
-    selenium_proc.close()
-    fir_proc.kill()
-    flask_proc.kill()
+    if selenium_proc:
+        selenium_proc.kill()
+        selenium_proc.join()
+        selenium_proc.close()
+    else:
+        Logger().get().error("Cant kill selenium process")
+    if fir_proc:
+        fir_proc.kill()
+    else:
+        Logger().get().error("Cant kill fir process")
+    if flask_proc:
+        flask_proc.kill()
+    else:
+        Logger().get().error("Cant kill flask process")
 
 
 @in_out_wrapper
@@ -108,7 +119,8 @@ def run_core(params: Dict[str, Any]) -> None:
     for loc in MM.locations.get("locations", {}).keys():
         in_game_location = MM.locations.get("locations", {})[loc]["name"]
 
-        print(
+        Logger().get().info(f"Gathering images for {loc}")
+        Logger().get().debug(
             f"Key: {loc}; "
             f"Location: {in_game_location}; "
             f"Position: {MM.locations.get('locations', {})[loc]}"
@@ -128,16 +140,16 @@ def run_core(params: Dict[str, Any]) -> None:
             MM().take_screenshot(filename)
             MM().cycle_storage()
 
-    print("Finished making screenshots.")
+    Logger().get().info("Finished making screenshots.")
 
     while check_for_images_to_process():
-        print(
+        Logger().get().info(
             "Images still processing. "
             f"Sleeping for {cfg.SLEEP_FILES_LEFT_TO_PROCESS_WAIT} seconds"
         )
         time.sleep(cfg.SLEEP_FILES_LEFT_TO_PROCESS_WAIT)
 
-    print(
+    Logger().get().info(
         "Finished sending images to FIR. "
         f"Will exit in {cfg.SLEEP_BEFORE_FINISHING} seconds."
     )

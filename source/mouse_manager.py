@@ -6,6 +6,10 @@ import time
 
 import toml
 import config as cfg
+from source.Logger import Logger
+from source.helpers.printout_helper import in_out_wrapper
+
+SUBLOGGER = "mouse_manager"
 
 
 class MM:
@@ -30,17 +34,20 @@ class MM:
         path = os.path.join(cfg.SOURCE_DIR, cfg.LOCATIONS_DIR, file)
 
         if os.path.exists(path):
-            print("Loaded")
+            Logger().get(SUBLOGGER).info("Loaded locations file")
             cls.locations = toml.load(path)
         else:
             msg = f"Cannot find {path}"
             raise FileNotFoundError(msg)
 
+    @in_out_wrapper
     def spew_location(self) -> None:
         while True:
             pos = pg.position()
             pos = (pos.x, pos.y)
-            print(f"Position: {pos}, offset: {self.offset_point(pos, True)}")
+            Logger().get(SUBLOGGER).debug(
+                f"Position: {pos}, offset: {self.offset_point(pos, True)}"
+            )
             time.sleep(cfg.POSITION_SPEW_SLEEP_TIME)
 
     def offset_point(self, pos: Tuple[int, int], reverse=False) -> Tuple[int, int]:
@@ -87,12 +94,13 @@ class MM:
 
     def mouse_to_storage(self, location: str) -> None:
         pos = self.locations.get("locations", {})[location]["pos"]
-        print(f"Position(storage): {pos}")
+        Logger().get(SUBLOGGER).debug(f"Position(storage): {pos}")
         self.mouse_to(pos)
 
     def cycle_storage(self) -> None:
         pg.typewrite(["tab"])
 
+    @in_out_wrapper
     def take_screenshot(self, filename: str = "") -> None:
         if not filename:
             filename = f"{round(time.time())}{cfg.IMAGE_EXTENSION}"
@@ -104,7 +112,7 @@ class MM:
                     int(self.config.get("parameters", {}).get("monitor_number", 1))
                 ]
             except IndexError:
-                print(
+                Logger().get(SUBLOGGER).critical(
                     f"Invalid monitor index (`monitor_number` parameter). Allowed range is <0,{len(sct.monitors) - 1}>"
                 )
                 exit(1)
