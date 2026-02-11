@@ -7,6 +7,7 @@ from typing import Any, Dict
 from multiprocessing import Process
 import toml
 
+from source.helpers.printout_helper import in_out_wrapper
 from source.image_processor import check_for_images_to_process, run_image_processor
 from source.mouse_manager import MM
 import config as cfg
@@ -18,6 +19,7 @@ def main() -> None:
     fir_proc = start_fir()
     selenium_proc = start_selenium(params)
     flask_proc = start_flask()
+
     try:
         run_core(params)
     except SystemExit:
@@ -38,12 +40,14 @@ def kill_child_processes(
     flask_proc.kill()
 
 
+@in_out_wrapper
 def start_selenium(params) -> Process:
     p1 = Process(target=run_image_processor, args=(params,))
     p1.start()
     return p1
 
 
+@in_out_wrapper
 def start_flask() -> subprocess.Popen:
     cmd = [
         "flask",
@@ -60,6 +64,7 @@ def start_flask() -> subprocess.Popen:
     return p1
 
 
+@in_out_wrapper
 def start_fir() -> subprocess.Popen:
     cmd = ["python", "-m", "http.server", str(cfg.FIR_PORT), "-d", cfg.FIR_DIR]
     proc = subprocess.Popen(cmd)
@@ -67,6 +72,7 @@ def start_fir() -> subprocess.Popen:
     return proc
 
 
+@in_out_wrapper
 def run_core(params: Dict[str, Any]) -> None:
     # get params
 
