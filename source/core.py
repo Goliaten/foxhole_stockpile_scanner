@@ -3,7 +3,7 @@ from pathlib import Path
 import subprocess
 import time
 import traceback
-from typing import Any, Dict, Tuple
+from typing import Any, Dict
 from multiprocessing import Process
 import toml
 
@@ -94,7 +94,10 @@ def start_flask() -> subprocess.Popen:
 @in_out_wrapper
 def start_fir() -> subprocess.Popen:
     cmd = ["python", "-m", "http.server", str(cfg.FIR_PORT), "-d", cfg.FIR_DIR]
-    proc = subprocess.Popen(cmd)
+
+    with open(os.devnull, "w") as FNULL:
+        # FIXME stdout of fir subprocess is muted to not clutter the cli terminal. Put this output into a logfile.
+        proc = subprocess.Popen(cmd, stdout=FNULL, stderr=subprocess.STDOUT)
 
     return proc
 
