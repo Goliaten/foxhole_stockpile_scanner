@@ -83,9 +83,9 @@ def start_flask() -> subprocess.Popen:
         str(cfg.RECEIVER_PORT),
     ]
     env = os.environ.copy()
-    env["FLASK_APP"] = str(
-        Path.cwd() / os.path.join(cfg.SOURCE_DIR, "http_receiver.py")
-    )
+    env |= {
+        "FLASK_APP": str(Path.cwd() / os.path.join(cfg.SOURCE_DIR, "http_receiver.py")),
+    }
     p1 = subprocess.Popen(cmd, env=env)
 
     return p1
