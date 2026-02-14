@@ -3,7 +3,7 @@ from pathlib import Path
 import subprocess
 import time
 import traceback
-from typing import Any, Dict
+from typing import Any, Dict, Tuple
 from multiprocessing import Process
 import toml
 
@@ -12,14 +12,14 @@ from source.image_processor import check_for_images_to_process, run_image_proces
 from source.mouse_manager import MM
 import config as cfg
 from source.Logger import Logger
+from source.typed_dicts.process_dict import ProcessDict
 
 
 def main() -> None:
     params = toml.load(os.path.join("params.toml"))
     # TODO don't start these subprocesses if we run position spew or screenshot check
-    fir_proc = start_fir()
-    selenium_proc = start_selenium(params)
-    flask_proc = start_flask()
+
+    process_dict = start_processes(params)
 
     try:
         run_core(params)
@@ -28,27 +28,43 @@ def main() -> None:
     except BaseException:
         traceback.print_exc()
 
-    kill_child_processes(selenium_proc, fir_proc, flask_proc)
+    kill_child_processes(process_dict)
+
+
+def start_processes(
+    params: Dict[str, Any],
+) -> ProcessDict:
+    return {
+        "fir": start_fir(),
+        "selenium": start_selenium(params),
+        "flask": start_flask(),
+    }
 
 
 @in_out_wrapper
-def kill_child_processes(
-    selenium_proc: Process, fir_proc: subprocess.Popen, flask_proc: subprocess.Popen
-):
+def kill_child_processes(process_dict: ProcessDict):
+
+    selenium_proc = process_dict.get("selenium")
+    fir_proc = process_dict.get("fir")
+    flask_proc = process_dict.get("flask")
     if selenium_proc:
         selenium_proc.kill()
         selenium_proc.join()
         selenium_proc.close()
     else:
-        Logger().get().error("Cant kill selenium process")
+        Logger().get().info(
+            "Cant kill selenium process. Process not found in process_dict."
+        )
     if fir_proc:
         fir_proc.kill()
     else:
-        Logger().get().error("Cant kill fir process")
+        Logger().get().info("Cant kill fir process. Process not found in process_dict.")
     if flask_proc:
         flask_proc.kill()
     else:
-        Logger().get().error("Cant kill flask process")
+        Logger().get().info(
+            "Cant kill flask process. Process not found in process_dict."
+        )
 
 
 @in_out_wrapper
