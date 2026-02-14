@@ -115,6 +115,9 @@ def run_core(params: Dict[str, Any]) -> None:
     # get params
 
     if params.get("run_settings", {}).get("neutralise_core"):
+        Logger().get().warning(
+            "Core is neutralised by a parameter. Script will stay in loop."
+        )
         while True:
             time.sleep(1)
             continue
