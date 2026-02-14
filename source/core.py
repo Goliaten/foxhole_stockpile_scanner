@@ -34,6 +34,14 @@ def main() -> None:
 def start_processes(
     params: Dict[str, Any],
 ) -> ProcessDict:
+    run_settings = params.get("run_settings", {})
+    if (
+        run_settings.get("run_position_spew")
+        or run_settings.get("run_screenshot_test")
+        or run_settings.get("run_position_setup")
+    ):
+        return {}
+
     return {
         "fir": start_fir(),
         "selenium": start_selenium(params),
