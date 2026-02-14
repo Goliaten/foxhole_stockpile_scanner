@@ -118,3 +118,28 @@ class MM:
                 exit(1)
             sct_img = sct.grab(mon)
             mss.tools.to_png(sct_img.rgb, sct_img.size, output=path)
+
+    @in_out_wrapper
+    def position_setup(self) -> None:
+        from pynput import keyboard
+        from pynput.mouse import Controller
+        from queue import Queue
+        import json
+
+        q = Queue()
+        mouse = Controller()
+
+        def on_click_record():
+            print("Global hotkey activated!")
+            out = {"type": "record", "position": mouse.position}
+            # print(out)
+            q.put(json.dumps(out))
+            print("item put in queue")
+
+        hotkeys = keyboard.GlobalHotKeys({"<ctrl>+a": on_click_record})
+        hotkeys.start()
+        while True:
+            if not q.empty():
+                print(f"Queue returned >{q.get()}<")
+            else:
+                time.sleep(0.5)
